@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import data from "./data.js";
+import path from 'path'
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import seedRouter from "./routes/seedRoutes.js";
@@ -17,7 +17,7 @@ mongoose
   .then(() => {
     console.log("connected to db");
   })
-  .catch((err) => {
+  .catch((err) => { 
     console.log(err.message);
   });
 
@@ -34,6 +34,12 @@ app.use("/api/seed", seedRouter);
 app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
+
+const _dirname=path.resolve();
+app.use(express.static(path.join(_dirname,'/frontend/build')))
+app.get('*',(req,res)=>{
+  res.sendFile(path.join(_dirname, '/frontend/build/index.html'))
+})
 
 app.use((err, req, res, next) => { 
   res.status(500).send({ message: err.message });
