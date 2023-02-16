@@ -1,5 +1,4 @@
 import { createContext, useReducer } from "react";
-import logger from "use-reducer-logger";
 
 export const Store = createContext();
 
@@ -75,7 +74,7 @@ function reducer(state, action) {
 }
 
 export function StoreProvider(props) {
-  const [state, Dispatch] = useReducer(logger(reducer), initialState);
+  const [state, Dispatch] = useReducer((reducer), initialState);
   const value = { state, Dispatch };
   return <Store.Provider value={value}>{props.children}</Store.Provider>;
 }
